@@ -1,0 +1,7 @@
+version: 2
+updates:
+  - package-ecosystem: Docker
+    directory: .devcontainer/
+    schedule:
+      interval: weekly
+      day: saturday
