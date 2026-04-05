@@ -1,5 +1,5 @@
 # trixie-20260316-slim
-FROM debian@sha256:26f98ccd92fd0a44d6928ce8ff8f4921b4d2f535bfa07555ee5d18f61429cf0c
+FROM debian@sha256:55a15a112b42be10bfc8092fcc40b6748dc236f7ef46a358d9392b339e9d60e8
 
 RUN apt-get update && apt-get install --yes --no-install-recommends \
     bash-completion \
