@@ -1,0 +1,5 @@
+# Default
+* @doughom
+
+# Protect workflows and CODEOWNERS
+/.github/ @doughom
