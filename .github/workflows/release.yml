@@ -18,6 +18,9 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        target: [devcontainer, pi]
 
     steps:
       - name: Checkout
@@ -28,6 +31,14 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
 
+      - name: Get Tag
+        id: tag
+        run: |
+          case ${{ matrix.target }} in
+            devcontainer) echo tag=latest;;
+            *) echo tag=${{ matrix.target }};; 
+          esac >> "$GITHUB_OUTPUT"
+
       - name: GHCR Login
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
@@ -37,38 +48,19 @@ jobs:
 
       - name: Push Dev Container Image
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
-        id: devcontainer
+        id: push
         with:
           context: .devcontainer/
-          target: devcontainer
+          target: ${{ matrix.target }}
           push: true
           platforms: linux/amd64,linux/arm64
           provenance: mode=max
           tags: |
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.tag }}
 
       - name: Add Image Attestation
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.devcontainer.outputs.digest }}
-          push-to-registry: true
-
-      - name: Push Pi Sandbox Image
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
-        id: pi
-        with:
-          context: .devcontainer/
-          target: pi
-          push: true
-          platforms: linux/amd64,linux/arm64
-          provenance: mode=max
-          tags: |
-            ghcr.io/${{ github.repository }}:pi
-
-      - name: Add Image Attestation
-        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
-        with:
-          subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.pi.outputs.digest }}
+          subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
