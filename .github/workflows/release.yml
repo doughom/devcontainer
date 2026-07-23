@@ -35,9 +35,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push Docker Image
+      - name: Push Dev Container Image
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
-        id: push
+        id: devcontainer
         with:
           context: .devcontainer/
           target: devcontainer
@@ -51,5 +51,24 @@ jobs:
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-digest: ${{ steps.devcontainer.outputs.digest }}
+          push-to-registry: true
+
+      - name: Push Pi Sandbox Image
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        id: pi
+        with:
+          context: .devcontainer/
+          target: pi
+          push: true
+          platforms: linux/amd64,linux/arm64
+          provenance: mode=max
+          tags: |
+            ghcr.io/${{ github.repository }}:pi
+
+      - name: Add Image Attestation
+        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.pi.outputs.digest }}
           push-to-registry: true
