@@ -1,15 +1,16 @@
-FROM debian:trixie-slim@sha256:26f98ccd92fd0a44d6928ce8ff8f4921b4d2f535bfa07555ee5d18f61429cf0c
+ARG BASE_IMAGE="python"
+ARG BASE_TAG="3.14.6-slim-trixie"
+ARG BASE_HASH="sha256:cea0e6040540fb2b965b6e7fb5ffa00871e632eef63719f0ea54bca189ce14a6"
 
-RUN apt-get update && apt-get install --yes --no-install-recommends \
-    bash-completion \
-    ca-certificates \
-    git \
-    locales
 
-RUN sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
-COPY bashrc /etc/bash.bashrc.custom
 
-RUN useradd --create-home --shell /bin/bash vscode
+FROM ${BASE_IMAGE}:${BASE_TAG}@${BASE_HASH} AS base
+ARG SNAPSHOT_DATE="20260715T000000Z"
+RUN --mount=type=bind,source=install_base_deps.sh,target=/tmp/install_base_deps.sh /tmp/install_base_deps.sh ${SNAPSHOT_DATE}
+
+
+
+FROM base AS devcontainer
+COPY zshrc /etc/skel/.zshrc
+RUN useradd --create-home --shell /bin/zsh vscode
 USER vscode
-
-RUN cat /etc/bash.bashrc.custom | tee -a /home/vscode/.bashrc
