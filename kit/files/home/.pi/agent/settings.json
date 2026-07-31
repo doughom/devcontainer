@@ -1,0 +1,4 @@
+{
+    "defaultProvider": "lmstudio",
+    "defaultModel": "google/gemma-4-12b-qat"
+}
