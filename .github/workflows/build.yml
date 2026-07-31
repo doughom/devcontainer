@@ -5,6 +5,8 @@ on:
   pull_request:
     paths:
       - .devcontainer/**
+      - .github/workflows/build.yml
+      - kit/**
     branches:
       - main
 
@@ -34,3 +36,22 @@ jobs:
           context: .devcontainer/
           target: ${{ matrix.target }}
           platforms: linux/amd64,linux/arm64
+
+  sandbox:
+    name: Validate sandbox kit
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install Docker Sandbox
+        run: |
+          sudo cp .github/apt/docker.asc /etc/apt/keyrings/
+          sudo cp .github/apt/docker.sources /etc/apt/sources.list.d/
+          sudo apt install --update --yes --no-install-recommends docker-sbx
+
+      - name: Validate
+        run: sbx kit validate ./kit
