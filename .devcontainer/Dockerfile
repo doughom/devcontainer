@@ -16,7 +16,7 @@ USER vscode
 
 
 
-FROM buildpack-deps:trixie-curl@sha256:ef554489e8f8b0245ef3cb2742b4c6b6e53c43bd64366b13f624982c854af2eb AS pi-builder
+FROM buildpack-deps:trixie-curl@sha256:94754d58ac54626fa712c5c06535980417dc44f82c883f9b10f7059dc9000f5f AS pi-builder
 # https://github.com/earendil-works/pi/releases
 ARG PI_VERSION=v0.80.3
 ARG PI_X64_HASH=e74a34ac2505556164144d8e39a64d6d5276f092166dad914319edc30c48abee
