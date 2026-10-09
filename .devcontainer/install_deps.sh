@@ -27,6 +27,9 @@ cat << 'EOF' > /etc/skel/.zshrc
 autoload -Uz compinit
 compinit
 
+# Hidden files completion
+_comp_options+=(globdots)
+
 source /usr/lib/git-core/git-sh-prompt
 setopt PROMPT_SUBST
 PROMPT='%F{green}%n %F{blue}%d %F{cyan}(%F{red}$(__git_ps1 "%s")%F{cyan})%f $ '
