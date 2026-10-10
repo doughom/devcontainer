@@ -18,10 +18,15 @@ apt upgrade --yes --update --snapshot "$snapshot_date"
 apt install --yes --update --snapshot "$snapshot_date" --no-install-recommends \
     git \
     locales \
+    sudo \
     zsh
 
 sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
+
+cat << 'EOF' > /etc/sudoers.d/devcontainer
+vscode ALL=(root) NOPASSWD: /usr/bin/chown -R vscode\:vscode /workspaces/
+EOF
 
 cat << 'EOF' > /etc/skel/.zshrc
 autoload -Uz compinit
