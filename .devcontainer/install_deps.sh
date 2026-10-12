@@ -41,3 +41,9 @@ source /usr/lib/git-core/git-sh-prompt
 setopt PROMPT_SUBST
 PROMPT='%F{green}%n %F{blue}%d %F{cyan}(%F{red}$(__git_ps1 "%s")%F{cyan})%f $ '
 EOF
+
+cat << 'EOF' > /etc/skel/chown.sh
+sudo chown -R vscode:vscode $HOME/.cache/
+sudo chown -R vscode:vscode /workspaces/
+EOF
+chmod +x /etc/skel/chown.sh
