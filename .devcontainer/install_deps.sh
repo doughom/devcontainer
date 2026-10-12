@@ -25,7 +25,9 @@ sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 
 cat << 'EOF' > /etc/sudoers.d/devcontainer
-vscode ALL=(root) NOPASSWD: /usr/bin/chown -R vscode\:vscode /workspaces/
+Cmnd_Alias CHOWN_CACHE = /usr/bin/chown -R vscode\:vscode /home/vscode/.cache/
+Cmnd_Alias CHOWN_WORKSPACES = /usr/bin/chown -R vscode\:vscode /workspaces/
+vscode ALL=(root) NOPASSWD: CHOWN_CACHE, CHOWN_WORKSPACES
 EOF
 
 cat << 'EOF' > /etc/skel/.zshrc
@@ -39,3 +41,9 @@ source /usr/lib/git-core/git-sh-prompt
 setopt PROMPT_SUBST
 PROMPT='%F{green}%n %F{blue}%d %F{cyan}(%F{red}$(__git_ps1 "%s")%F{cyan})%f $ '
 EOF
+
+cat << 'EOF' > /etc/skel/chown.sh
+sudo chown -R vscode:vscode $HOME/.cache/
+sudo chown -R vscode:vscode /workspaces/
+EOF
+chmod +x /etc/skel/chown.sh
