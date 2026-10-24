@@ -45,3 +45,27 @@ sudo chown -R vscode:vscode $HOME/.cache/
 sudo chown -R vscode:vscode /workspaces/
 EOF
 chmod +x /etc/skel/chown.sh
+
+cat << 'EOF' > /etc/gitconfig
+[branch]
+    sort = -committerdate
+[column]
+    ui = auto
+[core]
+    editor = code --wait
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+[init]
+    defaultBranch = main
+[pull]
+    ff = only
+[push]
+    autoSetupRemote = true
+    default = simple
+    followTags = true
+[tag]
+    sort = version:refname
+EOF
