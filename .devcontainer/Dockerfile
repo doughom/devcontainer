@@ -8,7 +8,7 @@ FROM astral/uv:${UV_TAG}@${UV_HASH} AS uv
 
 FROM python:${PYTHON_TAG}@${PYTHON_HASH} as devcontainer
 COPY --from=uv /uv /uvx /usr/local/bin/
-ARG SNAPSHOT_DATE="20261022T000000Z"
+ARG SNAPSHOT_DATE="20261023T000000Z"
 RUN --mount=type=bind,source=install_deps.sh,target=/tmp/install_deps.sh /tmp/install_deps.sh ${SNAPSHOT_DATE}
 RUN useradd --create-home --shell /bin/zsh vscode
 USER vscode
