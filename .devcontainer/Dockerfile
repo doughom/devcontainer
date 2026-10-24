@@ -5,10 +5,10 @@ ARG UV_TAG="0.13.5"
 ARG UV_HASH="sha256:32a7bb39b496babbd997b0a39a4d66c126bdaf5661b302bf6f06abda8deca6ff"
 
 FROM astral/uv:${UV_TAG}@${UV_HASH} AS uv
-
 FROM python:${PYTHON_TAG}@${PYTHON_HASH} as devcontainer
 COPY --from=uv /uv /uvx /usr/local/bin/
-ARG SNAPSHOT_DATE="20261023T000000Z"
-RUN --mount=type=bind,source=install_deps.sh,target=/tmp/install_deps.sh /tmp/install_deps.sh ${SNAPSHOT_DATE}
+
+ENV APT_SNAPSHOT_DATE="20261023T000000Z"
+RUN --mount=type=bind,source=install_deps.sh,target=/tmp/install_deps.sh /tmp/install_deps.sh ${APT_SNAPSHOT_DATE}
 RUN useradd --create-home --shell /bin/zsh vscode
 USER vscode

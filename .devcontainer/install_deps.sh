@@ -1,8 +1,6 @@
 #!/bin/bash
 set -eu
 
-snapshot_date="$1"
-
 cat << EOF > /etc/apt/apt.conf.d/devcontainer
 # Ignore expired release files for snapshots
 Acquire::Check-Valid-Until false;
@@ -14,8 +12,8 @@ EOF
 apt install --yes --update --no-install-recommends ca-certificates
 
 # Base devcontainer packages
-apt upgrade --yes --update --snapshot "$snapshot_date"
-apt install --yes --update --snapshot "$snapshot_date" --no-install-recommends \
+apt upgrade --yes --update --snapshot "$APT_SNAPSHOT_DATE"
+apt install --yes --update --snapshot "$APT_SNAPSHOT_DATE" --no-install-recommends \
     git \
     locales \
     sudo \
