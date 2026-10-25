@@ -7,4 +7,9 @@ COPY --from=uv /uv /uvx /usr/local/bin/
 ENV APT_SNAPSHOT_DATE="20261023T000000Z"
 RUN --mount=type=bind,source=install_deps.sh,target=/tmp/install_deps.sh /tmp/install_deps.sh ${APT_SNAPSHOT_DATE}
 RUN useradd --create-home --shell /bin/zsh vscode
+
+ENV UV_LINK_MODE="copy"
+ENV UV_PROJECT_ENVIRONMENT="/home/vscode/.cache/venv"
+ENV UV_SYSTEM_CERTS="true"
+
 USER vscode
