@@ -1,7 +1,7 @@
 # https://hub.docker.com/r/astral/uv/tags
 FROM astral/uv:0.13.5@sha256:32a7bb39b496babbd997b0a39a4d66c126bdaf5661b302bf6f06abda8deca6ff AS uv
 # https://hub.docker.com/_/python/tags?name=slim-trixie
-FROM python:3.14.9-slim-trixie@sha256:b347e2dcbc7f0b6f9fb7182e9da6a187fb10ae715e0692518c1aed0eec94a700 as devcontainer
+FROM python:3.15.0-slim-trixie@sha256:f5b92f2a669a4c347044f29367f31983280b648250ca94dea66f98c53bc87e58 as devcontainer
 COPY --from=uv /uv /uvx /usr/local/bin/
 
 ENV APT_SNAPSHOT_DATE="20261023T000000Z"
