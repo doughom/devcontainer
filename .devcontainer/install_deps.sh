@@ -52,8 +52,6 @@ chmod +x /etc/skel/chown.sh
 cat << 'EOF' > /etc/gitconfig
 [branch]
     sort = -committerdate
-[column]
-    ui = auto
 [core]
     editor = code --wait
 [diff]
