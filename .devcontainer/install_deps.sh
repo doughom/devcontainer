@@ -29,6 +29,10 @@ vscode ALL=(root) NOPASSWD: CHOWN_CACHE, CHOWN_WORKSPACES
 EOF
 
 cat << 'EOF' > /etc/skel/.zshrc
+# Fix permissions of mounts
+sudo chown -R vscode:vscode $HOME/.cache/ 2> /dev/null
+sudo chown -R vscode:vscode /workspaces/ 2> /dev/null
+
 autoload -Uz compinit
 compinit
 
@@ -43,17 +47,9 @@ venv="$HOME/.cache/venv/bin/activate"
 test -f "$venv" && source "$venv"
 EOF
 
-cat << 'EOF' > /etc/skel/chown.sh
-sudo chown -R vscode:vscode $HOME/.cache/
-sudo chown -R vscode:vscode /workspaces/
-EOF
-chmod +x /etc/skel/chown.sh
-
 cat << 'EOF' > /etc/gitconfig
 [branch]
     sort = -committerdate
-[column]
-    ui = auto
 [core]
     editor = code --wait
 [diff]
